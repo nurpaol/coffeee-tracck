@@ -1,1 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coffee Track</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f6ead9;
+  color: #4b2e20;
+  text-align: center;
+}
+header {
+  background: #5b3526;
+  color: white;
+  padding: 20px;
+}
+main { padding: 20px; }
+.stats {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+}
+.stat {
+  background: white;
+  padding: 14px 8px;
+  border-radius: 12px;
+  flex: 1;
+}
+#cup {
+  font-size: 100px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  margin: 20px;
+}
+.action {
+  background: #7b4b32;
+  color: white;
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 16px;
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>☕ Coffee Track</h1>
+  <p>Your Little Coffee Challenge</p>
+</header>
+<main>
+  <div class="stats">
+    <div class="stat">Score<br><strong id="score">0</strong></div>
+    <div class="stat">Time<br><strong id="time">30</strong>s</div>
+    <div class="stat">Goal<br><strong>20</strong></div>
+  </div>
+  <h2 id="message">Ready to make coffee?</h2>
+  <p>Tap the coffee cup to collect points!</p>
+  <button id="cup" onclick="collect()">☕</button>
+  <p id="feedback">Press start to play.</p>
+  <button class="action" onclick="startGame()">Start / Restart</button>
+</main>
+<script>
+let score = 0;
+let time = 30;
+let playing = false;
+let timer;
 
+function startGame() {
+  clearInterval(timer);
+  score = 0;
+  time = 30;
+  playing = true;
+  document.getElementById("score").textContent = score;
+  document.getElementById("time").textContent = time;
+  document.getElementById("message").textContent = "Let's make coffee!";
+  document.getElementById("feedback").textContent = "Reach 20 points!";
+  timer = setInterval(() => {
+    time--;
+    document.getElementById("time").textContent = time;
+    if (time <= 0) {
+      clearInterval(timer);
+      playing = false;
+      document.getElementById("message").textContent =
+        score >= 20 ? "Great job, Barista! 🎉" : "Time's up! Try again!";
+      document.getElementById("feedback").textContent =
+        "Final score: " + score;
+    }
+  }, 1000);
+}
+
+function collect() {
+  if (!playing) {
+    document.getElementById("feedback").textContent =
+      "Press Start / Restart first!";
+    return;
+  }
+  score++;
+  document.getElementById("score").textContent = score;
+  document.getElementById("feedback").textContent =
+    score >= 20 ? "Goal reached! Amazing! ☕" : "Coffee collected! +1";
+}
+</script>
+</body>
+</html>
